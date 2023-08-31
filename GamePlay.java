@@ -10,7 +10,8 @@ public class GamePlay {
         Scanner scnr = new Scanner(System.in);
         player = new Person();
 
-        System.out.println("Enter your name to play the game.");
+        System.out.println("Welcome to my Word Game!");
+        System.out.println("You will need to enter at least your first name to play.");
         System.out.println("Would you like to enter your last name? (Y/N)");
         String input = scnr.next();
 
