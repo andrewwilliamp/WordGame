@@ -1,35 +1,32 @@
 
- import java.util.Random;
+import java.util.Random;
 
 
 public class Numbers {
-    Random rand = new Random();
-    private int randomNum;
+    private static Random rand = new Random();
+    private static int randomNum;
 
-    public void setNum(int num) {
+    public static void setNum(int num) {
         randomNum = num;
     }
 
-    public int getNum() {
+    public static int getNum() {
         return randomNum;
     }
 
-    public void generateNumber() {
-        randomNum = rand.nextInt(100);
+    public static void generateNumber() {
+        randomNum = rand.nextInt(2);
         setNum(randomNum);
     }
 
-    public boolean compareNumber(int guess) {
+    public static boolean compareNumber(int guess) {
         if(guess == randomNum) {
-            System.out.println("Congratulations, you guessed the number!");
             return true;
         }
         else if(guess > randomNum) {
-            System.out.println("I'm sorry.  That guess was too high.");
             return false;
         }
         else {
-            System.out.println("I'm sorry.  That guess was too low.");
             return false;
         }
     }
