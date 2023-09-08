@@ -4,14 +4,12 @@ import java.util.Scanner;
 
 
 public class GamePlay {
-    private static Person player;
 
     public static void main(String[] args) {
         Scanner scnr = new Scanner(System.in);
-        player = new Person();
+        Players player = new Players();     // Create an instance of Players
 
-        System.out.println("Welcome to my Word Game!");
-        System.out.println("You will need to enter at least your first name to play.");
+        System.out.println("Enter your name to play the game.");
         System.out.println("Would you like to enter your last name? (Y/N)");
         String input = scnr.next();
 
@@ -32,17 +30,28 @@ public class GamePlay {
             System.out.println("Please enter the value Y, y, N, or n.");
         }
 
-        Numbers numberGame = new Numbers();
-        numberGame.generateNumber();
-        int playerGuess;
-        do {
-            System.out.print(player.getFirstName() + ", enter your guess (0 - 100): ");
-            playerGuess = scnr.nextInt();
-        } while (!numberGame.compareNumber(playerGuess));
+        Hosts host = new Hosts();       // Create an instance of Hosts
+        Turn turn = new Turn();         // Create an instance of Turn
+        host.randomizeNum();            // Generate a new random number for the host
 
+        boolean continuePlaying = true;
+        while (continuePlaying) {
+            host.randomizeNum();        // Generate a new random number for the host
 
+            boolean guessedCorrectly = false;
+
+            while(!guessedCorrectly) {
+                guessedCorrectly = turn.takeTurn(player, host);
+            }
+
+            System.out.println("Do you want to continue playing? (Y/N)");
+
+            String playAgainInput = scnr.next();
+            if (!(playAgainInput.equalsIgnoreCase("Y"))) {
+                continuePlaying = false;
+            }
+        }
         scnr.close();
-
-
     }
 }
+
