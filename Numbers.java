@@ -15,7 +15,7 @@ public class Numbers {
     }
 
     public static void generateNumber() {
-        randomNum = rand.nextInt(2);
+        randomNum = rand.nextInt(100);
         setNum(randomNum);
     }
 
