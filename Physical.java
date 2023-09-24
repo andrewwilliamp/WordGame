@@ -8,7 +8,7 @@ public class Physical implements Award {
                 "Vacation Package",
                 "Pellet Grill",
                 "Car",
-                "Cash Money"
+                "Washing Machine"
         };
     }
 
@@ -23,7 +23,7 @@ public class Physical implements Award {
     public int displayWinnings(Players player, boolean correctGuess) {
         if(correctGuess) {
             int prizeIndex = getRandomPrize();
-            System.out.println(player.getFirstName() + " Won a " + physicalPrizes[prizeIndex]);
+            System.out.println(player.getFirstName() + " won a " + physicalPrizes[prizeIndex]);
             return prizeIndex;
         }
         else {
