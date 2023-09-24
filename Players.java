@@ -1,4 +1,3 @@
-
 public class Players extends Person {
 
     private double money;
