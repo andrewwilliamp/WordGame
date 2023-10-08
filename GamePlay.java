@@ -1,83 +1,78 @@
-
-import java.lang.System;
-import java.util.Scanner;
-
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class GamePlay {
-    private static Players[] currentPlayers = new Players[3];   // Declare and initialize the array
-    private static Phrases phrases = new Phrases();             // Create an instance of Phrases
+    private static Players[] currentPlayers = new Players[3];
+    private static Phrases phrases = new Phrases();
+    private static Hosts host;
+    private static GUI gui;
+    private static int currentPlayerIndex = 0;
+    private static boolean firstPlayerEntered = false; // Flag to track if the first player entered their name
 
     public static void main(String[] args) {
-        Scanner scnr = new Scanner(System.in);
+        SwingUtilities.invokeLater(() -> {
+            gui = new GUI();
+        });
+    }
 
-        // Loop to create and add 3 players to the currentPlayers array
+    public static void addPlayer(String playerName) {
         for (int i = 0; i < 3; i++) {
-            System.out.println("Welcome to the Game, Player " + (i + 1));
-            System.out.println("We need at least your first name, " +
-                    "would you like to enter your last name? (Y/N)");
-            String input = scnr.next();
-            Players player = new Players();
-
-            if ((input.equals("Y")) || (input.equals("y"))) {
-                System.out.println("Player " + (i + 1) + ", enter your first name.");
-                String firstName = scnr.next();
-                System.out.println("Enter your last name.");
-                String lastName = scnr.next();
-                player.setFirstAndLast(firstName, lastName);
-            } else if ((input.equals("N")) || (input.equals("n"))) {
-                System.out.println("Player " + (i + 1) + ", enter your first name.");
-                String firstName = scnr.next();
-                player.setFirstNoLast(firstName);
-            } else {
-                System.out.println("Please enter the value Y, y, N, or n.");
-                i--; // Decrement i to re-enter player information for this player
-                continue;
+            if (currentPlayers[i] == null) {
+                Players newPlayer = new Players();
+                newPlayer.setFirstNoLast(playerName);
+                currentPlayers[i] = newPlayer;
+                currentPlayerIndex = i; // Update the current player index
+                gui.updatePlayersLabel(i);
+                firstPlayerEntered = true;
+                gui.updateCurrentPlayerLabel(); // Update the current player label after the first player enters their name
+                break;
             }
-            currentPlayers[i] = player;
         }
+    }
 
-        System.out.println("Please enter the host's name: ");
-        String hostName = scnr.next();
+    public static void addHost(String hostName) {
+        host = new Hosts(hostName);
+        gui.updateHostLabel(hostName);
 
-        Hosts host = new Hosts(hostName);       // Create an instance of Hosts
-        host.enterPhrase();
+        String playingPhrase = gui.promptForPhrase();
+        Phrases.setGamePhrase(playingPhrase);
+        gui.updatePhraseLabel(Phrases.getPlayingPhrase());
+    }
 
-        Turn turn = new Turn();                 // Create an instance of Turn
-
-        int currentPlayerIndex = 0;             // Index to keep track of the current player
-        boolean continuePlaying = true;
-        boolean gameWon = false;
-
-        while (continuePlaying) {
-            System.out.println(host.getFirstName() + " says, \"the phrase to guess is: " +
-                    phrases.getPlayingPhrase() + "\"");
-            Players currentPlayer = currentPlayers[currentPlayerIndex];
-            System.out.println("It is now the following player's turn:");
-            System.out.println(currentPlayers[currentPlayerIndex]);
-
-            boolean guessedCorrectly = turn.takeTurn(currentPlayer, host, phrases); // Update guessedCorrectly
-            if (guessedCorrectly) {
-                currentPlayerIndex = (currentPlayerIndex + 1) % 3;  // Move to the next player in a circular manner
+    public static void startPlayerTurn(String guessedLetter) {
+        ArrayList<Object> turnResult = Turn.takeTurn(currentPlayers[currentPlayerIndex], host, phrases, guessedLetter);
+        boolean guessedCorrectly = (boolean) turnResult.get(0);
+        double amountWon = (double) turnResult.get(1);
+        if (guessedCorrectly) {
+            Random random = new Random();
+            int randomPrizeType = random.nextInt(2);
+            if (randomPrizeType == 0) {
+                double CORRECT_GUESS_AMOUNT = 100.0;
+                double INCORRECT_GUESS_AMOUNT = 50.0;
+                Money money = new Money(CORRECT_GUESS_AMOUNT, INCORRECT_GUESS_AMOUNT);
+                double currentPlayerMoney = gui.getCurrentPlayerMoney();
+                currentPlayerMoney += amountWon;
+            } else {
+                // Handle physical prize
             }
 
-            // Check if the phrase is solved after each guess
             if (!phrases.getPlayingPhrase().contains("_")) {
-                gameWon = true;
-            }
-
-            if (gameWon) {
-                System.out.println("You solved the puzzle and won the game!");
-                System.out.println("Play another game? (Y/N)");
-                String playAgainInput = scnr.next();
-                if (!(playAgainInput.equalsIgnoreCase("Y"))) {
-                    continuePlaying = false;
-                } else {
-                    host.resetGamePhrase();             // Clear game phrase so host can enter another
-                    host.enterPhrase();
-                    gameWon = false; // Reset the gameWon flag for the new game
+                boolean gameWon = true;
+                if (gameWon) {
+                    int option = JOptionPane.showConfirmDialog(gui.getFrame(), "You solved the puzzle and won the game!\nPlay another game? (Y/N)", "Game Over", JOptionPane.YES_NO_OPTION);
+                    if (option == JOptionPane.YES_OPTION) {
+                        gui.restartGame();
+                    } else {
+                        System.exit(0);
+                    }
                 }
             }
         }
-        scnr.close();
+
+        // Move to the next player in a circular manner
+        currentPlayerIndex = (currentPlayerIndex + 1) % 3;
+        gui.updatePlayersLabel(currentPlayerIndex); // Update players label
+        gui.updateCurrentPlayerLabel(); // Update current player label after a player takes their turn
     }
 }

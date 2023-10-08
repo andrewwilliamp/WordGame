@@ -15,8 +15,6 @@ public class Players extends Person {
     }
 
     @Override
-    public String toString() {
-        return "Name: " + getFirstName() + " " + getLastName() + " Money: $" + money;
-    }
+    public String toString() { return "Name: " + getFirstName() + " " + getLastName() + " Money: $" + money; }
 
 }
