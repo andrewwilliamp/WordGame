@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/* Please help....I got seriously stuck on this assignment. 
+There are mutliple errors that I am unable to fix with this program now..
+*/
+
 public class GamePlay {
     private static Players[] currentPlayers = new Players[3];
     private static Phrases phrases = new Phrases();
