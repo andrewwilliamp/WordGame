@@ -1,5 +1,6 @@
-
+import javax.swing.*;
 
 public interface Award {
-    public abstract int displayWinnings(Players player, boolean correctGuess);
+    public abstract void displayWinnings(JFrame frame, Players player, boolean correctGuess);
+
 }

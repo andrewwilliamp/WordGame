@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Money implements Award {
     private double winAmount;
     private double loseAmount;
@@ -7,15 +9,22 @@ public class Money implements Award {
         this.loseAmount = loseAmount;
     }
 
-    public int displayWinnings(Players player, boolean correctGuess) {
-        if(correctGuess) {
-            System.out.println(player.getFirstName() + " won $" + winAmount);
-            return (int) winAmount;
-        }
-        else {
-            System.out.println(player.getFirstName() + " lost $" + loseAmount);
-            return (int) -loseAmount;
-        }
+
+    @Override
+    public void displayWinnings(JFrame frame, Players player, boolean correctGuess) {
+        double CORRECT_GUESS_AMOUNT = 100.0; // Amount to increase for a correct guess
+        double INCORRECT_GUESS_AMOUNT = 50.0;
+        JOptionPane.showMessageDialog(frame, "Congrats, you won $" + CORRECT_GUESS_AMOUNT);
     }
+
+
+    public void displayWinnings(JFrame frame, JTextArea textArea, Players player, boolean correctGuess) {
+        double CORRECT_GUESS_AMOUNT = 100.0; // Amount to increase for a correct guess
+        double INCORRECT_GUESS_AMOUNT = 50.0;
+        textArea.append("Congrats, you won $" + CORRECT_GUESS_AMOUNT + "\n");
+    }
+
 }
+
+
 

@@ -54,8 +54,6 @@ public class Phrases {
 
         playingPhrase = new String(playingPhraseChars);
 
-        System.out.println((found ? "Yes, that letter is in the phrase!" :
-                "The letter '" + letter + "' is not in the phrase."));
 
         return found; // Return whether the guess was correct or not
     }

@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Random;
 
 public class Physical implements Award {
@@ -20,16 +21,27 @@ public class Physical implements Award {
 
 
     @Override
-    public int displayWinnings(Players player, boolean correctGuess) {
+    public void displayWinnings(JFrame frame, Players player, boolean correctGuess) {
         if(correctGuess) {
             int prizeIndex = getRandomPrize();
-            System.out.println(player.getFirstName() + " won a " + physicalPrizes[prizeIndex]);
-            return prizeIndex;
+            JOptionPane.showMessageDialog(frame, "Congrats, you won a " + physicalPrizes[prizeIndex]);
         }
         else {
             int prizeIndex = getRandomPrize();
             System.out.println(player.getFirstName() + " missed out on the chance to win a " + physicalPrizes[prizeIndex]);
-            return 0;
+        }
+
+    }
+
+    // Overloaded method for appending to text area instead of displaying JOptionPane
+    public void displayWinnings(JFrame frame, JTextArea textArea, Players player, boolean correctGuess) {
+        if(correctGuess) {
+            int prizeIndex = getRandomPrize();
+            textArea.append("Congrats, you won a " + physicalPrizes[prizeIndex] + "\n");
+        }
+        else {
+            int prizeIndex = getRandomPrize();
+            System.out.println(player.getFirstName() + " missed out on the chance to win a " + physicalPrizes[prizeIndex]);
         }
 
     }
