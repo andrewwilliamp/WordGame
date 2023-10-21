@@ -8,8 +8,7 @@ import javax.swing.UIManager;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GUI implements ActionListener
-{
+public class GUI implements ActionListener {
     private JFrame frame;
     private JLabel playersLabel;
     private JButton addPlayerButton;
@@ -18,19 +17,19 @@ public class GUI implements ActionListener
     private JButton addHostButton;
     private JLabel playingPhraseLabel;
     private String phraseText;
-    private JButton startTurnButton;
-    private JLabel currentPlayerLabel;
-    private JLabel currentPlayerMoneyLabel;
+    public JButton startTurnButton;
+    public JLabel currentPlayerLabel;
+    public JLabel currentPlayerMoneyLabel;
     JMenuItem addPlayerMenuItem;
     JMenuItem addHostMenuItem;
     JMenuItem layoutMenuItem;
-    private JTextArea gameMessagesTextArea;
-    private JCheckBox saveGameMessages;
+    public JTextArea gameMessagesTextArea;
+    public JCheckBox saveGameMessages;
     private Players[] currentPlayers = new Players[3]; // Store player objects
     private Phrases phrases = new Phrases(); // Create an instance of Phrases
     private Hosts host; // Create an instance of Hosts
     int currentPlayerIndex = 0;            // Index to keep track of the current player
-    private double currentPlayerMoney = 1000.0; // Store the current player's money
+    public double currentPlayerMoney = 1000.0; // Store the current player's money
     Players player = new Players();
 
     public GUI() {
@@ -132,12 +131,10 @@ public class GUI implements ActionListener
     }
 
     // Method to update the players label
-    void updatePlayersLabel(int currentPlayerIndex)
-    {
+    void updatePlayersLabel(int currentPlayerIndex) {
         // Build a string with player names
         StringBuilder playersText = new StringBuilder("Players:\n");
-        for (int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 3; i++) {
             if (currentPlayers[i] != null) {
                 playersText.append(" | ").append(currentPlayers[i].getFirstName());
             }
@@ -152,15 +149,13 @@ public class GUI implements ActionListener
     }
 
     // Method to update the host label
-    void updateHostLabel(String hostName)
-    {
+    void updateHostLabel(String hostName) {
         hostLabel.setText("Host Name: " + hostName);
 
     }
 
     // Method to update the current playing phrase
-    void updatePhraseLabel(String playingPhrase)
-    {
+    void updatePhraseLabel(String playingPhrase) {
         playingPhraseLabel.setText("Playing Phrase: " + playingPhrase);
     }
 
@@ -229,7 +224,9 @@ public class GUI implements ActionListener
         resetMoney();
         clearMessagesInTextArea();
     }
+
     String playerName;
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -266,13 +263,12 @@ public class GUI implements ActionListener
             JOptionPane.showMessageDialog(frame, "I decided to use the default JFrame layout manager for my game. \n" +
                     "I chose this option because I could easily set the bounds of each component, \n" +
                     "allowing for the most flexibility in my game's design.");
-        }
-        else if (source == startTurnButton) {
+        } else if (source == startTurnButton) {
             if (!saveGameMessages.isSelected()) {
                 clearMessagesInTextArea();
             }
 
-            if ( (playerName != null && !playerName.isEmpty()) && (!hostLabel.getText().equals("Host Name:")) ) {
+            if ((playerName != null && !playerName.isEmpty()) && (!hostLabel.getText().equals("Host Name:"))) {
                 updateCurrentPlayerLabel();
                 boolean gameWon = false;
                 String guessedLetter = JOptionPane.showInputDialog(frame, "Enter a letter to guess:");
@@ -320,24 +316,10 @@ public class GUI implements ActionListener
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 JOptionPane.showMessageDialog(frame, "Please enter host and player names first");
             }
         }
     }
-
-/*
-    public static void main(String[] args)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run() {
-                new GUI();
-            }
-        });
-    }
-
- */
 }
+
