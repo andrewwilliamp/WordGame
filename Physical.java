@@ -2,7 +2,8 @@ import javax.swing.*;
 import java.util.Random;
 
 public class Physical implements Award {
-    private String[] physicalPrizes;
+    public String[] physicalPrizes;
+    public int prizeIndex;
     public Physical() {
         physicalPrizes = new String[]{
                 "Television",
@@ -34,15 +35,15 @@ public class Physical implements Award {
     }
 
     // Overloaded method for appending to text area instead of displaying JOptionPane
-    public void displayWinnings(JFrame frame, JTextArea textArea, Players player, boolean correctGuess) {
+    public int displayWinnings(JFrame frame, JTextArea textArea, Players player, boolean correctGuess) {
         if(correctGuess) {
-            int prizeIndex = getRandomPrize();
+            prizeIndex = getRandomPrize();
             textArea.append("Congrats, you won a " + physicalPrizes[prizeIndex] + "\n");
         }
         else {
-            int prizeIndex = getRandomPrize();
+            prizeIndex = getRandomPrize();
             System.out.println(player.getFirstName() + " missed out on the chance to win a " + physicalPrizes[prizeIndex]);
         }
-
+        return prizeIndex;
     }
 }
